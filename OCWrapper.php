@@ -10,13 +10,6 @@ class OCWrapper
 
     private $HTTP_PREFIX = 'https://api.octranspo1.com/v1.2/';
 
-    /*
-     * Should contain appid and apikey and any of the following options
-     * array (
-     *		dataFormat => ''	default is JSON
-     *		httpP => ''	default is https://api.octranspo1.com/v1.2/
-     * )
-     */
     public function __construct($data = null)
     {
         try {
@@ -43,8 +36,7 @@ class OCWrapper
             throw new Exception($e->getMessage());
         }
     }
-
-    // appID={appID}&apiKey={apiKey}&stopNo=7659
+    
     public function GetRouteSummaryForStop($data = null, $options = null)
     {
         if (is_null($data)) {
@@ -57,7 +49,6 @@ class OCWrapper
         return $this->retrieve_curl_info($method, $req_data, $options);
     }
 
-    // appID={appID}&apiKey={apiKey}&routeNo=1&stopNo=7659
     public function GetNextTripsForStop($data = null, $options = null)
     {
         if (!is_null($data)) {
@@ -68,7 +59,6 @@ class OCWrapper
         return $this->retrieve_curl_info($method, $req_data, $options);
     }
 
-    // appID={appID}&apiKey={apiKey}&stopNo=7659&format=json
     public function GetNextTripsForStopAllRoutes($data = null, $options = null)
     {
         if (is_null($data)) {
@@ -97,9 +87,9 @@ class OCWrapper
             return false;
         }
 
-        $format = null;
+        $format = 'json';
         if (isset($options['format'])) {
-            $format = preg_match("/^json|xml$/", $options['format'], $matches) ? array_shift($matches) : null;
+            $format = preg_match("/^xml$/", $options['format']) ? 'xml' : null;
         }
         
         $return_arr = true;
